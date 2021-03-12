@@ -10,6 +10,7 @@ while [drawing its child with an offset](https://github.com/flutter/flutter/blob
 `lib/main.dart` contains the entry to three examples.
 
 `lib/simplified_example.dart` is a reduced version of `ExpansionTile` with some comments written while trying to understand what circumvents the overflow issues.
+
 ![2021031212:41:35_screenshot_sel](https://user-images.githubusercontent.com/24209580/110935924-61f44780-8330-11eb-996c-30c8e07f10d7.png)
 
 
@@ -21,5 +22,6 @@ Also the subtree is never removed on the closed state:
 
 `lib/renderbox_example.dart` is a stripped down version of `RenderPositionedBox` without the alignment.
 You can specify an `offset` to move the child away from the parent and `thisSmallerThanChild` to reduce the parents size in relation to its child.
+
 ![2021031212:42:03_screenshot_sel](https://user-images.githubusercontent.com/24209580/110935938-66206500-8330-11eb-81a2-c35e9dfc10f9.png)
 
