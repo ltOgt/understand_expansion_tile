@@ -1,16 +1,5 @@
-# tile_expand
+# understand_tile_expand
 
-A new Flutter project.
+Wondered why [ExpansionTile](https://github.com/flutter/flutter/blob/c5a4b4029c0798f37c4a39b479d7cb75daa7b05c/packages/flutter/lib/src/material/expansion_tile.dart#L30) did not have overflow issues.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Turns out [Align](https://github.com/flutter/flutter/blob/fa06b34024e84f4cba2b67f4c66c20297b4710de/packages/flutter/lib/src/widgets/basic.dart#L1891) uses a [RenderPositionedBox](https://github.com/flutter/flutter/blob/bd69fa59356d2d007730b83635f5cf99c032f94b/packages/flutter/lib/src/rendering/shifted_box.dart#L366) that can grow beyond the constraints of its parent if `Align(heightFactor: ...)` or `Align(widthFactor: ...)` is set.
