@@ -94,8 +94,6 @@ class _SimpleExpansionTileState extends State<SimpleExpansionTile> with SingleTi
 
   @override
   Widget build(BuildContext context) {
-    final bool closed = !_isExpanded && _controller.isDismissed;
-
     final Widget childrenContainer = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: widget.children,
@@ -104,9 +102,7 @@ class _SimpleExpansionTileState extends State<SimpleExpansionTile> with SingleTi
     return AnimatedBuilder(
       animation: _controller.view,
       builder: _buildChildren,
-      // The null here does not seem to matter
-      // but probably more performant to simply not have the subtree if it is invisible anyway
-      child: closed ? null : childrenContainer,
+      child: childrenContainer,
     );
   }
 
