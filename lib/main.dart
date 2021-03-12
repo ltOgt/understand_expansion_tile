@@ -26,10 +26,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(),
       home: Scaffold(
         /// Reduced example with same visual result as original ExpansionTile
-        // body: SimplifiedExpansionTile(
-        //   title: Text('Click Me'),
-        //   children: children,
-        // ),
+        body: SimplifiedExpansionTile(
+          title: Text('Click Me'),
+          children: children,
+        ),
 
         /// Reduced example without clipping or hiding the child on collapse
         //body: VisibleExpansionTile(
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
 
         /// RenderBox.paint can paint child outside its ~position-constraints
         /// It can also have a smaller size than its child
-        body: PaintChildOutsideTest(),
+        //body: PaintChildOutsideTest(),
       ),
     );
   }
