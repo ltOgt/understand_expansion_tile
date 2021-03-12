@@ -101,7 +101,7 @@ class _SimplifiedExpansionTileState extends State<SimplifiedExpansionTile> with 
     return AnimatedBuilder(
       animation: _controller.view,
       builder: _buildChildren,
-      // needs another build after animation completes, see above in _handleTap
+      // needs another build to choose `null` after animation completes, see above in _handleTap
       child: closed ? null : childrenContainer,
     );
   }
@@ -116,12 +116,12 @@ class _SimplifiedExpansionTileState extends State<SimplifiedExpansionTile> with 
             onTap: _handleTap,
             title: widget.title,
           ),
-          // withouth the clip, the child would just be drawn on top (see simplified.dart)
+          // withouth the clip, the child would just be drawn on top (see visible_example.dart)
           ClipRect(
             child: Container(
               decoration: subDecoration,
               // Using Align(heightFactor: ...) reduces the size of Aligns underlying RenderPositionedBox while keeping the size of its child the same
-              // see move_outside.dart (and PaintChildOutsideTest()) in main to see how RenderBox.paint can draw outside of its own constraints
+              // see renderbox_example.dart (and PaintChildOutsideTest()) in main to see how RenderBox.paint can draw outside of its own constraints
               child: Align(
                 alignment: Alignment.center,
                 // this.height = heightFactor * children.height
