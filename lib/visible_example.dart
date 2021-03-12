@@ -1,36 +1,8 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData.dark(),
-      home: Scaffold(
-        body: SimpleExpansionTile(
-          title: Text('Click Me'),
-          children: [
-            Text("Child 1"),
-            Text("Child 2"),
-            Text("Child 3"),
-            CircularProgressIndicator(),
-            Text("Child 4"),
-            Text("Child 5"),
-            Text("Child 6"),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SimpleExpansionTile extends StatefulWidget {
-  const SimpleExpansionTile({
+/// Not only simplified, but also remove Clipping and pruning from tree on collapse
+class VisibleExpansionTile extends StatefulWidget {
+  const VisibleExpansionTile({
     Key? key,
     required this.title,
     this.children = const <Widget>[],
@@ -40,10 +12,10 @@ class SimpleExpansionTile extends StatefulWidget {
   final List<Widget> children;
 
   @override
-  _SimpleExpansionTileState createState() => _SimpleExpansionTileState();
+  _VisibleExpansionTileState createState() => _VisibleExpansionTileState();
 }
 
-class _SimpleExpansionTileState extends State<SimpleExpansionTile> with SingleTickerProviderStateMixin {
+class _VisibleExpansionTileState extends State<VisibleExpansionTile> with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeInTween = CurveTween(curve: Curves.easeIn);
 
   late AnimationController _controller;
@@ -107,27 +79,36 @@ class _SimpleExpansionTileState extends State<SimpleExpansionTile> with SingleTi
   }
 
   Widget _buildChildren(BuildContext context, Widget? childrenContainer) {
+    bool _break = false;
+
     return Container(
       decoration: mainDecoration,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
             onTap: _handleTap,
             title: widget.title,
           ),
-          // withouth the clip, the child would just be drawn on top
-          Align(
-            alignment: Alignment.center,
-            // this.height = heightFactor * children.height
-            // from 0 -> 1 on animate open
-            // from 1 -> 0 on animate close
-            //
-            // This uses RenderPositionedBox to get the childs size via getDryLayout
-            // (See below snippet)
-            heightFactor: _heightFactor.value,
-            child: childrenContainer,
-          ),
+          if (!_break)
+            // Using Align(heightFactor: ...) reduces the size of Aligns underlying RenderPositionedBox while keeping the size of its child the same
+            // see move_outside.dart (and PaintChildOutsideTest()) in main to see how RenderBox.paint can draw outside of its own constraints
+            Align(
+              alignment: Alignment.center,
+              // this.height = heightFactor * children.height
+              // from 0 -> 1 on animate open
+              // from 1 -> 0 on animate close
+              heightFactor: _heightFactor.value,
+              child: childrenContainer,
+            ),
+          if (_break)
+            // this Container does not use RenderPositionedBox
+            // try setting _break=true to see an overflow
+            Container(
+              alignment: Alignment.center,
+              // rough estimate of the childs size for this example
+              height: 200 * _heightFactor.value,
+              child: childrenContainer,
+            ),
         ],
       ),
     );
