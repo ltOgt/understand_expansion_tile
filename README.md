@@ -8,7 +8,7 @@ Turns out [Align](https://github.com/flutter/flutter/blob/fa06b34024e84f4cba2b67
 ## files
 `lib/main.dart` contains a reduced version of `ExpansionTile` with some comments written while trying to understand what circumvents the overflow issues.
 
-`lib/simplified.dart` contains an even more reduced version of `ExpansionTile` with which highlights the role of `Align`.
+`lib/simplified.dart` contains an even more reduced version of `ExpansionTile` which highlights the role of `Align`.
 It looks differently, since the align is not clipped.
 Also the subtree is never removed on the closed state:
 
