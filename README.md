@@ -25,3 +25,102 @@ You can specify an `offset` to move the child away from the parent and `thisSmal
 
 ![2021031212:42:03_screenshot_sel](https://user-images.githubusercontent.com/24209580/110935938-66206500-8330-11eb-81a2-c35e9dfc10f9.png)
 
+
+# Simple example
+
+```dart
+import 'package:flutter/material.dart';
+
+class SimpleExpansion extends StatelessWidget {
+  final Widget Function(bool isExpanded) builder;
+  final bool isExpanded;
+  final Duration duration;
+  final Curve curve;
+
+  const SimpleExpansion({
+    super.key,
+    required this.builder,
+    required this.isExpanded,
+    this.duration = const Duration(milliseconds: 200),
+    this.curve = Curves.easeInOut,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final child = builder(isExpanded);
+
+    return ClipRect(
+      child: AnimatedAlign(
+        alignment: Alignment.topCenter,
+        heightFactor: isExpanded ? 1.0 : 0.0,
+        duration: duration,
+        curve: curve,
+        child: child,
+      ),
+    );
+  }
+}
+
+// Demo
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: const Scaffold(
+        body: SafeArea(child: Center(child: DemoTile())),
+      ),
+    ),
+  );
+}
+
+class DemoTile extends StatefulWidget {
+  const DemoTile({super.key});
+
+  @override
+  State<DemoTile> createState() => _DemoTileState();
+}
+
+class _DemoTileState extends State<DemoTile> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => setState(() => _expanded = !_expanded),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            color: Colors.blueGrey.shade100,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text("Tap to expand/collapse"),
+                const SizedBox(width: 12),
+                Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+              ],
+            ),
+          ),
+        ),
+        SimpleExpansion(
+          isExpanded: _expanded,
+          builder: (isExpanded) {
+            return Container(
+              width: 240,
+              padding: const EdgeInsets.all(12),
+              color: Colors.blueGrey.shade50,
+              child: const Text(
+                "This is the expanded content.\n"
+                "It animates open/closed without overflow.",
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+```
